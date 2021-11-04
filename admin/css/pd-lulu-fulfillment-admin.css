@@ -1,0 +1,11 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+ .l4w_input textarea {
+     width: 90%;
+ }
+ .l4w_input input[type=text] {
+     width: 90%;
+ }
