@@ -220,7 +220,7 @@ class PD_Lulu_Fulfillment_Admin
 		?>
 			<p class="form-field form-field-wide">
 				<label for="lulu_print_job_status">Lulu Print Job Status:</label>
-				<input type="text" disabled value="<?=PDLF()->getFulfillmentStatus($printJobStatus)?>">
+				<input type="text" disabled value="<?= PDLF()->getFulfillmentStatus($printJobStatus) ?>">
 			</p>
 		<?php
 		}
@@ -352,7 +352,7 @@ class PD_Lulu_Fulfillment_Admin
 		$hasPrices = $product->get_meta('lulu_print_cost_excl_tax');
 		$recalcPrintCost = $recalcPrintCost || !$hasPrices;
 
-		if($recalcPrintCost) {
+		if ($recalcPrintCost) {
 			$t = PD_Lulu_Fulfillment_Communicator::instance();
 			$printJobCost = $t->getPrintJobCostCalculation(array(
 				'contents' => array(
@@ -756,7 +756,7 @@ class PD_Lulu_Fulfillment_Admin
 			$newinput['shipping_fee_label'] = '';
 		}
 
-		if($authorizationChanged) {
+		if ($authorizationChanged) {
 			delete_transient('PD_Lulu_Fulfillment_access_token');
 			delete_transient('PD_Lulu_Fulfillment_refresh_token');
 		}
@@ -904,5 +904,34 @@ class PD_Lulu_Fulfillment_Admin
 	public function output_product_meta_box($post)
 	{
 		require(plugin_dir_path(__FILE__) . 'partials/pd-lulu-fulfillment-product-meta-box.php');
- 	}
+	}
+
+	/**
+	 * Output the "Print Cost" button on Admin Edit Order Screen if there's Lulu Products in order.
+	 */
+	public function wc_add_print_cost_button($order)
+	{
+		$hasProds = false;
+		foreach ($order->get_items() as $lineItem) {
+			$lineItemData = $lineItem->get_data();
+			if (!$lineItemData['product_id']) {
+				continue;
+			}
+
+			$product = wc_get_product($lineItemData['product_id']);
+			$hasProds = $product->is_type('lulu4woocommerce');
+
+			if($hasProds){
+				break;
+			}
+		}
+
+		if(!$hasProds){
+			return;
+		}
+
+		?>
+		<button type="button" class="button make-print-cost">Make Print Cost</button>
+		<?php
+	}
 }
