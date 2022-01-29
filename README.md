@@ -63,6 +63,13 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 ## Changelog
 
+### 1.4.0
+
+* Run an order at print cost from the admin edit order page!
+    1. Updates Lulu line items with printing cost
+    1. Adds shipping costs from Lulu
+    1. Adds fulfillment fees from Lulu
+
 ### 1.3.0
 
 * Upload Cover and Interior PDFs directly on the product page now - no more copy-pasting links!
@@ -95,6 +102,10 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 * Initial Version. Create Lulu Book products in your WooCommerce store and have them automatically printed and shipped to your customers once payment is received.
 
 ## Upgrade Notice
+
+### 1.4.0
+
+Admins can make orders at print cost.
 
 ### 1.3.0
 
