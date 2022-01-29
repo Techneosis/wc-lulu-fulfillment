@@ -239,7 +239,6 @@ class PD_Lulu_Fulfillment
 			$this->loader->add_action('add_meta_boxes_product', $plugin_admin, 'wc_add_product_meta_boxes');
 			
 			$this->loader->add_filter('admin_footer', $plugin_admin, 'l4w_admin_footer', 10, 0);
-			$this->loader->add_action('woocommerce_order_item_lulu4woocommerce_html', $plugin_admin, 'woocommerce_order_item_lulu4woocommerce_html', 10, 3);
 			$this->loader->add_action('woocommerce_admin_order_item_headers', $plugin_admin, 'woocommerce_admin_order_item_headers');
 			$this->loader->add_action('woocommerce_admin_order_item_values', $plugin_admin, 'woocommerce_admin_order_item_values', 10, 3);
 			$this->loader->add_action('woocommerce_order_item_add_action_buttons', $plugin_admin, 'wc_add_print_cost_button');
