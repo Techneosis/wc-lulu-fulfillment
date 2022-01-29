@@ -946,7 +946,7 @@ class PD_Lulu_Fulfillment_Admin
 				$('.make-print-cost').on('click', () => {
 					var data = {
 						'action': 'l4w_print_cost',
-						'post_id': <?= get_the_ID() || -1?>,
+						'post_id': <?= get_the_ID() ? get_the_ID() : '-1'?>,
 					};
 
 					// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -987,12 +987,6 @@ class PD_Lulu_Fulfillment_Admin
 		ob_clean();
 		echo $value;
 		wp_die();
-	}
-
-	public static function woocommerce_order_item_lulu4woocommerce_html($item_id, $item, $order) {
-		?>
-		<h1>nice</h1>
-		<?php
 	}
 
 	public static function woocommerce_admin_order_item_headers($order) {
