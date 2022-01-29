@@ -414,6 +414,7 @@ class PD_Lulu_Fulfillment_Print_Job_Cost_Calculation {
 	public $total_cost_incl_tax;
 	public $total_discount_amount;
 	public $currency;
+	public $fees;
 	
 	public function __construct($request)
 	{
@@ -452,6 +453,11 @@ class PD_Lulu_Fulfillment_Print_Job_Cost_Calculation {
 					$this->line_item_costs = array();
 					foreach($body->line_item_costs as $line_item_cost) {
 						$this->line_item_costs[] = new PD_Lulu_Fulfillment_Print_Job_Cost_Line_Item($line_item_cost);
+					}
+					
+					$this->fees = array();
+					foreach($body->fees as $fee){
+						$this->fees[] = new PD_Lulu_Fulfillment_Print_Job_Fee($fee);
 					}
 
 					$this->shipping_cost = new PD_Lulu_Fulfillment_Print_Job_Cost_Shipping($body->shipping_cost);
@@ -510,5 +516,25 @@ class PD_Lulu_Fulfillment_Print_Job_Cost_Shipping {
 		$this->total_cost_incl_tax = $stdObj->total_cost_incl_tax;
 		$this->total_tax = $stdObj->total_tax;
 		$this->tax_rate = $stdObj->tax_rate;
+	}
+}
+
+class PD_Lulu_Fulfillment_Print_Job_Fee {
+	public $currency;
+	public $fee_type;
+	public $sku;
+	public $tax_rate;
+	public $total_cost_excl_tax;
+	public $total_cost_incl_tax;
+	public $total_tax;
+
+	public function __construct($stdObj) {
+		$this->currency = $stdObj->currency;
+		$this->fee_type = $stdObj->fee_type;
+		$this->sku = $stdObj->sku;
+		$this->tax_rate = $stdObj->tax_rate;
+		$this->total_cost_excl_tax = $stdObj->total_cost_excl_tax;
+		$this->total_cost_incl_tax = $stdObj->total_cost_incl_tax;
+		$this->total_tax = $stdObj->total_tax;
 	}
 }

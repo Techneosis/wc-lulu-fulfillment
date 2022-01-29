@@ -951,6 +951,7 @@ class PD_Lulu_Fulfillment_Admin
 
 					// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 					jQuery.post(ajaxurl, data, function(response) {
+						window.confirm(response);
 						window.location.reload();
 					});
 				});
@@ -978,8 +979,63 @@ class PD_Lulu_Fulfillment_Admin
 		$communicator = PD_Lulu_Fulfillment_Communicator::instance();
 		$costCalculation = $communicator->getPrintJobCostCalculation($package);
 
-		$order->set_total($costCalculation->total_cost_incl_tax);
-		$order->save();
+		if($costCalculation->is_success){
+			// Need to update the order metas
+			foreach(self::getLuluLineItemsFromOrder($order) as $iterationId => $lineItem) {
+				$lineItemId = $lineItem->get_id();
+				$costCalc = $costCalculation->line_item_costs[$iterationId];
+
+				wc_update_order_item_meta( $lineItemId, '_line_total', $costCalc->total_cost_incl_tax );
+			}
+
+			// Handle Shipping Data:
+			$shippingItemId = null;
+			foreach($order->get_items('shipping') as $item_id => $shipping_item) {
+				$item_data = $shipping_item->get_data();
+				$shipping_data_method_id    = $item_data['method_id'];
+				if('pd_lulu_shipping' === $shipping_data_method_id) {
+					$shippingItemId = $item_id;
+					// self::ajax_output(json_encode(array(
+					// 	'nice' => 'Goteem',
+					// 	'obj' => $item_data
+					// )));
+					break;
+				}
+			}
+			$shippingMethod = $shippingItemId ? new WC_Order_Item_Shipping($shippingItemId) : new WC_Order_Item_Shipping();
+			if(!$shippingItemId){
+				$order->add_item($shippingMethod);
+			}
+			$shippingMethod->set_method_id('pd_lulu_shipping');
+			$shippingMethod->set_method_title('Lulu Shipping');
+			$shippingMethod->set_total($costCalculation->shipping_cost->total_cost_incl_tax);
+			$shippingMethod->save();
+
+			// Handle Fee Data:
+			foreach($costCalculation->fees as $calcFee) {
+				$existingItem = null;
+				foreach($order->get_items('fee') as $item_id => $fee) {
+					$item_data = $fee->get_data();
+					if($calcFee->sku == $item_data['name']) {
+						$existingItem = $fee;
+						break;
+					}
+				}
+
+				if(!$existingItem) {
+					$existingItem = new WC_Order_Item_Fee();
+					$existingItem->set_name($calcFee->sku);
+					$order->add_item($existingItem);
+				}
+				$existingItem->set_total_tax($calcFee->total_tax);
+				$existingItem->set_amount($calcFee->total_cost_excl_tax);
+				$existingItem->set_total($calcFee->total_cost_incl_tax);
+				$existingItem->save();
+			}
+
+			$order->set_total($costCalculation->total_cost_incl_tax);
+			$order->save();
+		}
 		self::ajax_output(json_encode($costCalculation));
 	}
 
