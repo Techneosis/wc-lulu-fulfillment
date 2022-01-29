@@ -946,7 +946,7 @@ class PD_Lulu_Fulfillment_Admin
 				$('.make-print-cost').on('click', () => {
 					var data = {
 						'action': 'l4w_print_cost',
-						'post_id': <?= get_the_ID()?>,
+						'post_id': <?= get_the_ID() || -1?>,
 					};
 
 					// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
