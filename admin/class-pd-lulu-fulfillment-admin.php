@@ -911,6 +911,10 @@ class PD_Lulu_Fulfillment_Admin
 	 */
 	public function wc_add_print_cost_button($order)
 	{
+		if(!$order->is_editable()) {
+			return;
+		}
+
 		$hasProds = false;
 		foreach ($order->get_items() as $lineItem) {
 			$lineItemData = $lineItem->get_data();
