@@ -934,4 +934,129 @@ class PD_Lulu_Fulfillment_Admin
 		<button type="button" class="button make-print-cost">Make Print Cost</button>
 		<?php
 	}
+
+	/**
+	 * Adds script to handle print-cost order functions to admin footer.
+	 */
+	public static function l4w_admin_footer() {
+		?>
+		<!-- WooCommerce Tracks -->
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$('.make-print-cost').on('click', () => {
+					var data = {
+						'action': 'l4w_print_cost',
+						'post_id': <?= get_the_ID()?>,
+					};
+
+					// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+					jQuery.post(ajaxurl, data, function(response) {
+						window.location.reload();
+					});
+				});
+			});
+		</script>
+		<?php
+	}
+
+	public static function order_print_cost($data) {
+		global $wpdb; // this is how you get access to the database
+		$post_id = intval( $_POST['post_id'] );
+	
+		$order = wc_get_order($post_id);
+
+		if(!$order) {
+			self::ajax_output("Invalid request");
+		}
+		
+		if(!self::orderHasLuluProducts($order)) {
+			self::ajax_output("No print-on-demand items to make print-cost.");
+		}
+
+		$package = self::getLuluPackageFromOrder($order);
+
+		$communicator = PD_Lulu_Fulfillment_Communicator::instance();
+		$costCalculation = $communicator->getPrintJobCostCalculation($package);
+
+		$order->set_total($costCalculation->total_cost_incl_tax);
+		$order->save();
+		self::ajax_output(json_encode($costCalculation));
+	}
+
+	private static function ajax_output($value) {
+		ob_clean();
+		echo $value;
+		wp_die();
+	}
+
+	public static function woocommerce_order_item_lulu4woocommerce_html($item_id, $item, $order) {
+		?>
+		<h1>nice</h1>
+		<?php
+	}
+
+	public static function woocommerce_admin_order_item_headers($order) {
+		// if(!self::orderHasLuluProducts($order)) {
+		// 	// No reason to add lulu item cost header then!
+		// 	return;
+		// }
+		?>
+			<th class="lulu_item_cost sortable" data-sort="float">Cost to Print</th>
+		<?php
+	}
+
+	public static function woocommerce_admin_order_item_values($product, $item, $item_id) {
+		$isLulu = $product && $product->is_type('lulu4woocommerce');
+		$hasPrices = $product ? $product->get_meta('lulu_print_cost_excl_tax') : null;
+		?>
+		<td><?=$hasPrices ? $hasPrices : ''?></td>
+		<?php
+	}
+
+	private static function orderHasLuluProducts($order) {
+		$luluLineItems = self::getLuluLineItemsFromOrder($order);
+		return count($luluLineItems) > 0;
+	}
+
+	private static function getLuluLineItemsFromOrder($order) {
+		$ret = array();
+		foreach ($order->get_items() as $lineItem) {
+			$lineItemData = $lineItem->get_data();
+			if(!$lineItemData['product_id']) {
+				continue;
+			}
+
+			$product = wc_get_product($lineItemData['product_id']);
+			if($product->is_type('lulu4woocommerce')) {
+				$ret[] = $lineItem;
+			}
+		}
+		return $ret;
+	}
+
+	private static function getLuluPackageFromOrder($order) {
+		$lineItems = self::getLuluLineItemsFromOrder($order);
+		if(count($lineItems) == 0) {
+			return array();
+		}
+
+		$contents = array();
+		foreach($lineItems as $lineItem) {
+			$contents[] = array(
+				'data' => WC_GET_PRODUCT($lineItem['product_id']),
+				'quantity' => $lineItem['quantity'],
+			);
+		}
+		return array(
+			'contents' => $contents,
+			'destination' => array(
+				'country'   => $order->get_shipping_country(),
+				'state'     => $order->shipping_state,
+				'postcode'  => $order->shipping_postcode,
+				'city'      => $order->shipping_city,
+				'address_1' => $order->shipping_address_1,
+				'address_2' => $order->shipping_address_2,
+			),
+		);
+	}
 }
