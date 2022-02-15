@@ -14,23 +14,6 @@
 
 <div id="pd_lulu_printing_panel" class="panel woocommerce_options_panel hidden">
 <?PHP
-    woocommerce_wp_text_input(
-        array(
-            'id'        => 'lulu_cover_pdf_url',
-            'label'     => __('Lulu Cover PDF Url', PD_LULU_FULFILLMENT_DOMAIN),
-            'type'      => 'string',
-            'desc_tip'  => __('URL to download pdf containing the book cover', PD_LULU_FULFILLMENT_DOMAIN)
-        )
-    );
-
-    woocommerce_wp_text_input(
-        array(
-            'id'        => 'lulu_interior_pdf_url',
-            'label'     => __('Lulu Interior PDF Url', PD_LULU_FULFILLMENT_DOMAIN),
-            'type'      => 'string',
-            'desc_tip'  => __('URL to download pdf containing the book interior', PD_LULU_FULFILLMENT_DOMAIN)
-        )
-    );
 
     woocommerce_wp_text_input(
         array(
@@ -214,18 +197,6 @@
             'name' => 'lulu_foil_sku',
             'custom_attributes' => array(),
             'description' => '',
-        )
-    );
-
-    woocommerce_wp_text_input(
-        array(
-            'id'        => 'lulu_pod_package_id',
-            'label'     => __('Lulu Pod Package ID', PD_LULU_FULFILLMENT_DOMAIN),
-            'type'      => 'string',
-            'desc_tip'  => __('Enter the Pod Package Id describing the printed product', PD_LULU_FULFILLMENT_DOMAIN),
-            'custom_attributes' => array(
-                'disabled' => 'disabled'
-            )
         )
     );
 ?>
