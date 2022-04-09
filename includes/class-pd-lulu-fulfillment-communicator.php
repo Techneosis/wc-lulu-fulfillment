@@ -94,8 +94,6 @@ class PD_Lulu_Fulfillment_Communicator
 	 */
 	public function __construct()
 	{
-		$this->logDir = WP_PLUGIN_DIR . '/pd-lulu-fulfillment/logs/';
-		// die(print_r($this->logDir));
 		$this->loadSettings();
 	}
 
@@ -143,10 +141,7 @@ class PD_Lulu_Fulfillment_Communicator
 			);
 	
 			$authUrl = $this->_getEndpoint('auth-token');
-			// fwrite($logFile, 'URL: ' . $authUrl . "\r\n\r\nARGS: " . wp_json_encode($authArgs) . "END ARGS\r\n\r\n");
 			$authRequest = wp_remote_post($authUrl,  $authArgs);
-	
-			// fwrite($logFile, 'RESPONSE: ' . print_r($authRequest, true) . "END RESPONSE\r\n\r\n");
 			$authRequestBody = json_decode($authRequest['body']);
 	
 			// $accessToken = $authRequestBody->access_token;
@@ -176,10 +171,8 @@ class PD_Lulu_Fulfillment_Communicator
 				)
 			);
 			$authUrl = $this->_getEndpoint('auth-token');
-			// fwrite($logFile, 'URL: ' . $authUrl . "\r\n\r\nARGS: " . wp_json_encode($authArgs) . "END ARGS\r\n\r\n");
 			$authRequest = wp_remote_post($authUrl,  $authArgs);
 	
-			// fwrite($logFile, 'RESPONSE: ' . print_r($authRequest, true) . "END RESPONSE\r\n\r\n");
 			$authRequestBody = json_decode($authRequest['body']);
 
 			$accessToken = $authRequestBody->access_token;
@@ -285,7 +278,6 @@ class PD_Lulu_Fulfillment_Communicator
 		if (sizeof($luluLineItems)) {
 			//Compile lulu request
 			$currDateTime = wp_date('Y-m-d');
-			$logFile = fopen($this->logDir . $order->get_id() . "-" . $currDateTime . ".txt", 'w');
 			$pluginOptions = get_option(PD_LULU_FULFILLMENT_OPTIONS);
 
 			$luluPrintJob['contact_email'] = $pluginOptions['contact_email'];
@@ -300,10 +292,7 @@ class PD_Lulu_Fulfillment_Communicator
 			$printArgs['body'] = wp_json_encode($luluPrintJob);
 
 			$printUrl = $this->_getEndpoint('print-jobs');
-			fwrite($logFile, 'URL: ' . $printUrl . "\r\n\r\nARGS: " . wp_json_encode($printArgs) . "END ARGS\r\n\r\n");
 			$printJobRequest = wp_remote_post($printUrl, $printArgs);
-			fwrite($logFile, 'RESPONSE: ' . print_r($printJobRequest, true) . "END RESPONSE\r\n\r\n");
-			fclose($logFile);
 
 			if ($printJobRequest && $printJobRequest['response'] && $printJobRequest['response']['code'] == "201") {
 				// Print-Job successfully created, store that information on the order
@@ -387,13 +376,9 @@ class PD_Lulu_Fulfillment_Communicator
 		$costArgs['body'] = wp_json_encode($calcRequestBody);
 	
 		$currDateTime = wp_date('Y-m-d');
-		$logFile = fopen($this->logDir . 'cost-calculations' . "-" . $currDateTime . ".txt", 'w');
 
 		$costUrl = $this->_getEndpoint('print-job-cost-calculations');
-		fwrite($logFile, 'URL: ' . $costUrl . "\r\n\r\nARGS: " . wp_json_encode($costArgs) . "END ARGS\r\n\r\n");
 		$costRequest = wp_remote_post($costUrl, $costArgs);
-		fwrite($logFile, 'RESPONSE: ' . print_r($costRequest, true) . "END RESPONSE\r\n\r\n");
-		fclose($logFile);
 		return new PD_Lulu_Fulfillment_Print_Job_Cost_Calculation($costRequest);
 	}
 }
