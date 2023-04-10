@@ -1,6 +1,6 @@
 === Peaceful Lulu Fulfillment ===
-Contributors: peacefuldev
-Donate link: www.peacefuldev.com
+Contributors: Brett
+Donate link: www.techneosis.com
 Tags: lulu, dropshipping, print-on-demand, woo, woocommerce, publishing
 Requires at least: 3.0.1
 Tested up to: 5.7
@@ -25,7 +25,7 @@ Provide automatic dropshipping for self published books using WooCommerce and Lu
 
 **Initial Setup**
 
-1. Upload 'pd-lulu-fulfillment.zip' to the '/wp-content/plugins/' directory
+1. Upload 'wc-lulu-fulfillment.zip' to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Navigate to the 'Lulu Fulfillment' link added to the side bar of your WordPress admin area
 1. Select Sandbox or Production Lulu Environment (Orders sent to the Lulu sandbox will never be charged or fulfilled, perfect for testing the integration)
@@ -47,16 +47,11 @@ Provide automatic dropshipping for self published books using WooCommerce and Lu
 
 Never been asked a question.
 
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
-
 == Changelog ==
+
+= 1.4.1 =
+* Small fix for Print Job Cost Calculation endpoint change
+    * Bogus default phone number
 
 = 1.4.0 =
 

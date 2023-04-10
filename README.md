@@ -1,7 +1,7 @@
 # Peaceful Lulu Fulfillment
 
-**Contributors:** peacefuldev \
-**Donate link:** www.peacefuldev.com \
+**Contributors:** Brett \
+**Donate link:** www.techneosis.com \
 **Tags:** lulu, dropshipping, print-on-demand, woo, woocommerce, publishing \
 **Requires at least:** 3.0.1 \
 **Tested up to:** 5.7 \
@@ -21,12 +21,12 @@ Provide automatic dropshipping for self published books using WooCommerce and Lu
 ## Installation
 
 **Requirements**
-* Use of this plugin requires a Lulu Developer account and credentials. Sign up free [here](https://developers.lulu.com/ "Lulu Developer Site").
-* This plugin builds on top of and requires the WooCommerce plugin. Check it out [here](https://wordpress.org/plugins/woocommerce/ "WooCommerce Plugin Page).
+* Use of this plugin requires a Lulu Developer account and credentials. Sign up free here: [Lulu Developer Site](https://developers.lulu.com/).
+* This plugin builds on top of and requires the WooCommerce plugin. Check it out here: [WooCommerce Plugin Page](https://wordpress.org/plugins/woocommerce/).
 
 **Initial Setup**
 
-1. Upload 'pd-lulu-fulfillment.zip' to the '/wp-content/plugins/' directory
+1. Upload 'wc-lulu-fulfillment.zip' to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Navigate to the 'Lulu Fulfillment' link added to the side bar of your WordPress admin area
 1. Select Sandbox or Production Lulu Environment (Orders sent to the Lulu sandbox will never be charged or fulfilled, perfect for testing the integration)
@@ -47,21 +47,12 @@ Provide automatic dropshipping for self published books using WooCommerce and Lu
 
 Never been asked a question.
 
-## Screenshots
-
-### 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-
-![This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from](https://s.w.org/plugins/peaceful-lulu-fulfillment/screenshot-1.png)
-
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-### 2. This is the second screen shot
-
-![This is the second screen shot](https://s.w.org/plugins/peaceful-lulu-fulfillment/screenshot-2.png)
-
 
 ## Changelog
+
+### 1.4.1 
+* Small fix for Print Job Cost Calculation endpoint change
+    * Bogus default phone number
 
 ### 1.4.0
 

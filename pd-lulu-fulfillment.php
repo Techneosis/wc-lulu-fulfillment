@@ -16,7 +16,7 @@
  * Plugin Name:       Peaceful Lulu Fulfillment
  * Plugin URI:        www.peacefuldev.com/lulu-fulfillment
  * Description:       Fulfill book sales with Lulu's print-on-demand services
- * Version:           1.4.0
+ * Version:           1.4.1
  * Author:            Brett Parshall
  * Author URI:        www.peacefuldev.com
  * License:           GPL-2.0+

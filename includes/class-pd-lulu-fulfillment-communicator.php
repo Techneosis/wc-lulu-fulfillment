@@ -370,7 +370,8 @@ class PD_Lulu_Fulfillment_Communicator
 			'postcode' => $package['destination']['postcode'],
 			'state_code' => $package['destination']['state'],
 			'street1' => $package['destination']['address_1'] ? $package['destination']['address_1'] : 'x', // Lulu requires street address to be set but 
-			'street2' => $package['destination']['address_2']
+            'street2' => $package['destination']['address_2'],
+            'phone_number' => '1111111111' // Lulu Requires this field for shipping cost calculations now
 		);
 		$calcRequestBody['shipping_level'] = 'MAIL';
 		$costArgs['body'] = wp_json_encode($calcRequestBody);
@@ -425,12 +426,7 @@ class PD_Lulu_Fulfillment_Print_Job_Cost_Calculation {
 					break;
 				case '400':
 					$this->is_success = false;
-					$this->errors = array();
-					foreach($body->line_items as $lineItem) {
-						foreach(get_object_vars($lineItem) as $attribute => $error) {
-							$this->errors[$attribute] = implode('|', $error);
-						}
-					}
+                    $this->errors = $body;
 					break;
 				case '201':
 					$this->is_success = true;
